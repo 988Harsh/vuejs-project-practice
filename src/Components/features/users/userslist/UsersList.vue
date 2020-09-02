@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <router-link tag="v-col" to="/users/add">
+      <router-link tag="v-col" :to="{name:'userAdd',params:{isEditing:false}}">
         <v-btn class="mx-2" dark color="indigo">
           <v-icon dark>mdi-plus</v-icon>
         </v-btn>
@@ -26,7 +26,10 @@
                 <td>{{ user.age }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                  <router-link tag="v-btn" :to="{name:'userEdit',params:{_id:user._id}}">
+                  <router-link
+                    tag="v-btn"
+                    :to="{name:'userEdit',params:{_id:user._id,isEditing:true}}"
+                  >
                     <v-icon left>mdi-pencil</v-icon>
                   </router-link>
                 </td>
@@ -60,7 +63,7 @@
 </template>
 
 <script>
-import { deleteUser, getUser } from "./services/user.service";
+import { deleteUser, getUser } from "../services/user.service";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -110,13 +113,8 @@ export default {
 
   methods: {
     async deleteUser(_id) {
-      let index = this.users.findIndex((user) => user._id === _id);
-      let before = this.users.length;
-      this.users.splice(index, 1);
       const res = await deleteUser(_id);
-      //   console.log(before, " ", typeof before);
-      if (before === 1) this.page = this.page - 1;
-      else this.page = this.page;
+      this.$store.dispatch("loadUsers", { page: this.page });
     },
 
     next() {

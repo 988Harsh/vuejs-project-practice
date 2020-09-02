@@ -5,19 +5,15 @@ const Users = resolve => {
         resolve(require('../Users.vue'));
     }, 'users')
 }
-const EditUser = resolve => {
-    require.ensure(['../UsersEdit.vue'], () => {
-        resolve(require('../UsersEdit.vue'));
-    }, 'users')
-}
-const CreateUser = resolve => {
-    require.ensure(['../UserCreate.vue'], () => {
-        resolve(require('../UserCreate.vue'));
+
+const userManage = resolve => {
+    require.ensure(['../user-managerial/UserManagarial.vue'], () => {
+        resolve(require('../user-managerial/UserManagarial.vue'));
     }, 'users')
 }
 const UsersList = resolve => {
-    require.ensure(['../UsersList.vue'], () => {
-        resolve(require('../UsersList.vue'));
+    require.ensure(['../userslist/UsersList.vue'], () => {
+        resolve(require('../userslist/UsersList.vue'));
     }, 'users')
 }
 
@@ -29,8 +25,8 @@ export const routes = [
     {
         path: '/users', component: Users, children: [
             { path: '', component: UsersList },
-            { path: 'add', component: CreateUser },
-            { path: ':_id/edit', component: EditUser, name: 'userEdit' },
+            { path: 'add', component: userManage, name: 'userAdd' },
+            { path: ':_id/edit', component: userManage, name: 'userEdit' },
         ]
     },
     { path: '*', redirect: { name: 'home' } }
