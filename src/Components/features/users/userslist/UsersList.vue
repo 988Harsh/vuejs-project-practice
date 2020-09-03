@@ -26,12 +26,9 @@
                 <td>{{ user.age }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                  <router-link
-                    tag="v-btn"
-                    :to="{name:'userEdit',params:{_id:user._id,isEditing:true}}"
-                  >
+                  <v-btn @click="editUser(user._id)">
                     <v-icon left>mdi-pencil</v-icon>
-                  </router-link>
+                  </v-btn>
                 </td>
                 <td>
                   <v-btn @click="deleteUser(user._id)" class="mx-2" color="cyan">
@@ -107,11 +104,17 @@ export default {
 
   async created() {
     this.$store.dispatch("loadUsers", { page: this.$route.params.page });
-    // this.users = await getUsers();
-    // this.users = await this.$store.getters.getUsers();
   },
 
   methods: {
+    async editUser(_id) {
+      await this.$store.dispatch("fetchUser", { _id });
+      this.$router.push({
+        name: "userEdit",
+        params: { _id: _id, isEditing: true },
+      });
+    },
+
     async deleteUser(_id) {
       const res = await deleteUser(_id);
       this.$store.dispatch("loadUsers", { page: this.page });

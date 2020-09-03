@@ -7,13 +7,13 @@ const Users = resolve => {
 }
 
 const userManage = resolve => {
-    require.ensure(['../user-managerial/UserManagarial.vue'], () => {
-        resolve(require('../user-managerial/UserManagarial.vue'));
+    require.ensure(['../userManage/UserManage.vue'], () => {
+        resolve(require('../userManage/UserManage.vue'));
     }, 'users')
 }
 const UsersList = resolve => {
-    require.ensure(['../userslist/UsersList.vue'], () => {
-        resolve(require('../userslist/UsersList.vue'));
+    require.ensure(['../usersList/UsersList.vue'], () => {
+        resolve(require('../usersList/UsersList.vue'));
     }, 'users')
 }
 
