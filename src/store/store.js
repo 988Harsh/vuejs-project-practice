@@ -11,6 +11,8 @@ export const store = new Vuex.Store({
     state: {
         users: [],
         itemCount: 0,
+        user: {},
+        isEditing: false,
     },
 
     getters: {
@@ -21,7 +23,18 @@ export const store = new Vuex.Store({
         SAVE_USERS(state, data) {
             state.users = data.users;
             state.itemCount = data.count;
-        }
+        },
+        SAVE_USER(state, data) {
+            state.user = data;
+            state.isEditing = true;
+        },
+        UPDATECREATE_RESPONSE(state, data) {
+            state.user = {};
+            state.isEditing = false;
+        },
+        UPDATE_USER({ state }, newValue) {
+            state.user = { ...state.user, ...newvalue }
+        },
     },
 
     actions: {
@@ -31,6 +44,24 @@ export const store = new Vuex.Store({
             }).catch(error => {
                 throw new Error(`API ${error}`);
             });
+        },
+        async fetchUser({ commit }, { ...payload }) {
+            return await axios.get(`http://localhost:3000/users/${payload._id}`).then(res => {
+                commit('SAVE_USER', res.data);
+            }).catch(error => {
+                throw new Error(`API ${error}`);
+            });
+        },
+        async updateOrInsertUser({ commit }, { ...payload }) {
+            if (this.state.isEditing === true) {
+                return await axios.patch(`http://localhost:3000/users/${payload._id}`, this.state.user).then(res => {
+                    commit('UPDATECREATE_RESPONSE', res.data);
+                })
+            } else {
+                return await axios.post(`http://localhost:3000/users`, this.state.user).then(res => {
+                    commit('UPDATECREATE_RESPONSE', res.data);
+                })
+            }
         }
     },
 

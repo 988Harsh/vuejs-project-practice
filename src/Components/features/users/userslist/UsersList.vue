@@ -26,12 +26,9 @@
                 <td>{{ user.age }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                  <router-link
-                    tag="v-btn"
-                    :to="{name:'userEdit',params:{_id:user._id,isEditing:true}}"
-                  >
+                  <v-btn @click="editUser(user._id)">
                     <v-icon left>mdi-pencil</v-icon>
-                  </router-link>
+                  </v-btn>
                 </td>
                 <td>
                   <v-btn @click="deleteUser(user._id)" class="mx-2" color="cyan">
@@ -51,7 +48,7 @@
             v-if="pages>1"
             v-model="page"
             :length="pages"
-            @input.prevent="next"
+            @input="next"
             :total-visible="7"
             prev-icon="mdi-menu-left"
             next-icon="mdi-menu-right"
@@ -68,8 +65,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      pager: {},
-      pageOfItems: [],
+      page: 1,
     };
   },
   computed: {
@@ -89,15 +85,6 @@ export default {
         this.$store.dispatch("loadUsers", { page: pagination.page });
       },
     },
-    page: {
-      get() {
-        return this.$route.params.page ? parseInt(this.$route.params.page) : 1;
-      },
-      set(val) {
-        val = val === 0 ? 1 : val;
-        this.$store.dispatch("loadUsers", { page: val });
-      },
-    },
     pages: {
       get() {
         return Math.ceil(this.count / 3);
@@ -106,18 +93,27 @@ export default {
   },
 
   async created() {
-    this.$store.dispatch("loadUsers", { page: this.$route.params.page });
-    // this.users = await getUsers();
-    // this.users = await this.$store.getters.getUsers();
+    this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
+    this.$store.dispatch("loadUsers", {
+      page: this.page,
+    });
   },
 
   methods: {
+    async editUser(_id) {
+      await this.$store.dispatch("fetchUser", { _id });
+      this.$router.push({
+        name: "userEdit",
+        params: { _id: _id, isEditing: true, page: this.page },
+      });
+    },
+
     async deleteUser(_id) {
       const res = await deleteUser(_id);
       this.$store.dispatch("loadUsers", { page: this.page });
     },
 
-    next() {
+    next($event) {
       this.$store.dispatch("loadUsers", { page: this.page });
     },
   },
