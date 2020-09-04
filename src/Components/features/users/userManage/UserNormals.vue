@@ -17,7 +17,7 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
-    ...mapMutations(["setUserName", "setUserAge"]),
+    ...mapMutations(["UPDATE_USER"]),
   },
   //seperate Validation for name and age.
 };

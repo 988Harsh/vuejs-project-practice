@@ -30,7 +30,7 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
-    ...mapMutations(["setUserName", "setUserAge"]),
+    ...mapMutations(["UPDATE_USER"]),
   },
   //separate validation for email and password!
 };
