@@ -4,7 +4,7 @@
       <v-text-field
         name="name"
         :value="user.name"
-        @input="sendName"
+        @input="user.name = $event"
         :counter="30"
         label="name"
         required
@@ -12,7 +12,14 @@
     </v-col>
 
     <v-col cols="12" md="3">
-      <v-text-field name="age" :value="user.age" @input="sendAge" :counter="3" label="Age" required></v-text-field>
+      <v-text-field
+        name="age"
+        :value="user.age"
+        @input="user.age = $event"
+        :counter="3"
+        label="Age"
+        required
+      ></v-text-field>
     </v-col>
   </div>
 </template>
@@ -23,14 +30,7 @@ export default {
   computed: {
     ...mapState(["user"]),
   },
-  methods: {
-    sendName($event) {
-      this.$emit("sendName", $event);
-    },
-    sendAge($event) {
-      this.$emit("sendAge", $event);
-    },
-  },
+
   //seperate Validation for name and age.
 };
 </script>

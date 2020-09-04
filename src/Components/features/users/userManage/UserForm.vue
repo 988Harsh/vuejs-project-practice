@@ -2,8 +2,8 @@
   <form @submit.prevent="submit">
     <v-container>
       <v-row>
-        <normals @sendName="user.name=$event" @sendAge="user.age=$event"></normals>
-        <credentials @sendEmail="user.email=$event" @sendPassword="user.password=$event"></credentials>
+        <normals></normals>
+        <credentials></credentials>
       </v-row>
       <div class="text-center">
         <v-btn type="submit" class="ma-2" tile outlined color="success">
@@ -23,17 +23,12 @@ export default {
     normals: normalVals,
     credentials: userCreds,
   },
-  data() {
-    return {
-      user: {},
-    };
-  },
   computed: {
     ...mapState(["isEditing"]),
   },
   methods: {
-    async submit($event) {
-      this.$emit("onSubmit", this.user);
+    async submit() {
+      this.$emit("onSubmit");
     },
   },
 };

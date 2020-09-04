@@ -9,12 +9,14 @@ export default {
     userForm: Userform,
   },
   methods: {
-    async submit($event) {
+    async submit() {
       await this.$store.dispatch("updateOrInsertUser", {
-        user: $event,
-        _id: this.$store.state.user._id, //
+        _id: this.$route.params._id, //
       });
-      this.$router.push({ path: "/users" });
+      this.$router.push({
+        name: "userList",
+        params: { page: this.$route.params.page },
+      });
     },
   },
 };

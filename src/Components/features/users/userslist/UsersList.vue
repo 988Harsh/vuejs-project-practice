@@ -48,7 +48,7 @@
             v-if="pages>1"
             v-model="page"
             :length="pages"
-            @input.prevent="next"
+            @input="next"
             :total-visible="7"
             prev-icon="mdi-menu-left"
             next-icon="mdi-menu-right"
@@ -65,8 +65,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      pager: {},
-      pageOfItems: [],
+      page: 1,
     };
   },
   computed: {
@@ -86,15 +85,6 @@ export default {
         this.$store.dispatch("loadUsers", { page: pagination.page });
       },
     },
-    page: {
-      get() {
-        return this.$route.params.page ? parseInt(this.$route.params.page) : 1;
-      },
-      set(val) {
-        val = val === 0 ? 1 : val;
-        this.$store.dispatch("loadUsers", { page: val });
-      },
-    },
     pages: {
       get() {
         return Math.ceil(this.count / 3);
@@ -103,7 +93,10 @@ export default {
   },
 
   async created() {
-    this.$store.dispatch("loadUsers", { page: this.$route.params.page });
+    this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
+    this.$store.dispatch("loadUsers", {
+      page: this.page,
+    });
   },
 
   methods: {
@@ -111,7 +104,7 @@ export default {
       await this.$store.dispatch("fetchUser", { _id });
       this.$router.push({
         name: "userEdit",
-        params: { _id: _id, isEditing: true },
+        params: { _id: _id, isEditing: true, page: this.page },
       });
     },
 
@@ -120,7 +113,7 @@ export default {
       this.$store.dispatch("loadUsers", { page: this.page });
     },
 
-    next() {
+    next($event) {
       this.$store.dispatch("loadUsers", { page: this.page });
     },
   },

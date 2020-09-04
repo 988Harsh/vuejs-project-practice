@@ -1,7 +1,13 @@
 <template>
   <div class="col-md-8">
     <v-col cols="12" md="5">
-      <v-text-field name="email" :value="user.email" @input="sendEmail" label="E-mail" required></v-text-field>
+      <v-text-field
+        name="email"
+        :value="user.email"
+        @input="user.email = $event"
+        label="E-mail"
+        required
+      ></v-text-field>
     </v-col>
 
     <v-col cols="12" md="3">
@@ -9,7 +15,7 @@
         type="password"
         name="password"
         :value="user.password"
-        @input="sendPassword"
+        @input="user.password = $event"
         label="Password"
         required
       ></v-text-field>
@@ -22,14 +28,6 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState(["user"]),
-  },
-  methods: {
-    sendEmail($event) {
-      this.$emit("sendEmail", $event);
-    },
-    sendPassword($event) {
-      this.$emit("sendPassword", $event);
-    },
   },
   //separate validation for email and password!
 };

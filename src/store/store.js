@@ -51,11 +51,11 @@ export const store = new Vuex.Store({
         },
         async updateOrInsertUser({ commit }, { ...payload }) {
             if (this.state.isEditing === true) {
-                return await axios.patch(`http://localhost:3000/users/${payload._id}`, payload.user).then(res => {
+                return await axios.patch(`http://localhost:3000/users/${payload._id}`, this.state.user).then(res => {
                     commit('UPDATECREATE_RESPONSE', res.data);
                 })
             } else {
-                return await axios.post(`http://localhost:3000/users`, payload.user).then(res => {
+                return await axios.post(`http://localhost:3000/users`, this.state.user).then(res => {
                     commit('UPDATECREATE_RESPONSE', res.data);
                 })
             }
