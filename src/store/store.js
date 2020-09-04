@@ -32,6 +32,18 @@ export const store = new Vuex.Store({
             state.user = {};
             state.isEditing = false;
         },
+        setUserName(state, value) {
+            state.user.name = value
+        },
+        setUserAge(state, value) {
+            state.user.age = value
+        },
+        setUserEmail(state, value) {
+            state.user.email = value
+        },
+        setUserPassword(state, value) {
+            state.user.password = value
+        }
     },
 
     actions: {
